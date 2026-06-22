@@ -501,7 +501,18 @@ function verificarAccesoExamen(event) {
             html: 'Debes descargar primero el documento de <strong>Política de Uso Aceptable (MC211-IT-2)</strong> antes de acceder al examen.',
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#00446A',
-            footer: 'Haz clic en la tarjeta de "Política de Uso Aceptable" para descargar el PDF'
+            footer: 'Haz clic en la tarjeta de "Política de Uso Aceptable" para descargar el PDF',
+            // ✅ Aquí va el callback
+            didClose: () => {
+                // Buscar el elemento
+                const policyCard = document.getElementById('policy-card');
+
+                if (policyCard) {
+                    policyCard.scrollIntoView({ behavior: 'smooth', top: -150 });
+                } else {
+                    console.warn('⚠️ No se encontró el elemento con id="policy-card"');
+                }
+            }
         });
     }
     // Si está descargado, permitirá la redirección normal
@@ -535,8 +546,22 @@ function verificarAccesoExamen(event) {
             html: 'Debes descargar primero el documento de <strong>Política de Uso Aceptable (MC211-IT-2)</strong> antes de acceder al examen.',
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#00446A',
-            footer: 'Haz clic en la tarjeta de "Política de Uso Aceptable" para descargar el PDF'
-        });
+            footer: 'Haz clic en la tarjeta de "Política de Uso Aceptable" para descargar el PDF',
+            // ✅ Aquí va el callback
+            didClose: () => {
+                // Buscar el elemento
+                const policyCard = document.getElementById('policy-card');
+                
+                // Debug: revisa la consola para saber si lo encuentra
+                //console.log('Elemento policy-card:', policyCard);
+
+                if (policyCard) {
+                    policyCard.scrollIntoView({ behavior: 'smooth', top: -150 });
+                } else {
+                    console.warn('⚠️ No se encontró el elemento con id="policy-card"');
+                }
+            }
+        })
     }
     // Si está descargado, permitirá la redirección normal
 }
