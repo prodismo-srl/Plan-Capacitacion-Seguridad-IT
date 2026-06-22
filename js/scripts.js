@@ -1,16 +1,19 @@
 //----------------- General para todas las paginas -----------------
+document.addEventListener('DOMContentLoaded', function () {
+    initializeBackToTop();
+});
 // Cargar los códigos generados
 let arrayCodes = []; // Variable global
 
 // Modificar initializeApp para asignar a la variable global
 async function initializeApp() {
     const result = await loadProtectedCodes();
-    
+
     if (result.codes.length === 0) {
         console.error('No se pudieron cargar los códigos');
         return;
     }
-    
+
     arrayCodes = result.codes; // Asignar a la variable global
     return arrayCodes;
 }
@@ -41,38 +44,61 @@ async function loadProtectedCodes() {
     //     return getCodes();
 
     // } catch (error) {
-        //console.warn('No se pudieron cargar los códigos protegidos:', error);
-        
-        // Fallback: cargar desde JSON
-        try {
-            const response = await fetch('../data/codes.json');
-            //console.log('response: ', response)
-            return await response.json();
+    //console.warn('No se pudieron cargar los códigos protegidos:', error);
 
-        } catch (jsonError) {
-            console.error('Error cargando códigos:', jsonError);
-            
-            // Fallback para desarrollo: códigos de prueba
-            console.warn('Usando códigos de prueba para desarrollo');
-            
-            return []
-        }
+    // Fallback: cargar desde JSON
+    try {
+        const response = await fetch('../data/codes.json');
+        //console.log('response: ', response)
+        return await response.json();
+
+    } catch (jsonError) {
+        console.error('Error cargando códigos:', jsonError);
+
+        // Fallback para desarrollo: códigos de prueba
+        console.warn('Usando códigos de prueba para desarrollo');
+
+        return []
+    }
     // }
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp())
 //-----------------------------------------------------------------
+// Función para el botón "Volver arriba"
+function initializeBackToTop() {
+    const backToTopButton = document.getElementById('back-to-top');
+
+    if (backToTopButton) {
+        window.addEventListener('scroll', function () {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
 
 
 // Aplicar a todos los enlaces con la clase
 document.querySelectorAll('.smooth-page-transition').forEach(link => {
-    link.addEventListener('click', function(e) {
+    link.addEventListener('click', function (e) {
         e.preventDefault();
         const href = this.href;
-        
+
         // Aplicar fade out
         document.body.classList.add('fade-out');
-        
+
         // Redirigir después de 300ms
         setTimeout(() => {
             window.location.href = href;
@@ -113,7 +139,7 @@ const commonTooltipCallback = {
     plugins: {
         tooltip: {
             callbacks: {
-                title: function(tooltipItems) {
+                title: function (tooltipItems) {
                     const item = tooltipItems[0];
                     let label = item.chart.data.labels[item.dataIndex];
                     if (Array.isArray(label)) {
@@ -128,10 +154,10 @@ const commonTooltipCallback = {
 };
 
 const ataquesData = {
-    labels: ['2021', '2022', '2023', '2024', '2025(proy)'],
+    labels: ['2021', '2022', '2023', '2024', '2025', '2026(proy)'],
     datasets: [{
         label: '% de ataques al sector',
-        data: [15, 19, 21, 24, 28],
+        data: [15, 19, 21, 24, 44, 50],
         backgroundColor: '#0072B2',
         borderColor: '#00446A',
         borderWidth: 2,
@@ -151,7 +177,7 @@ if (ataquesCtx) {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        callback: function(value) {
+                        callback: function (value) {
                             return value + "%"
                         }
                     }
@@ -191,12 +217,11 @@ if (humanFactorCtx) {
 }
 
 //----------------- Molulo 1 --------------------------------
-
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const emailSupportIcon = document.getElementById('emailSupportIcon');
 
     if (emailSupportIcon) {
-        emailSupportIcon.addEventListener('click', function() {
+        emailSupportIcon.addEventListener('click', function () {
             Swal.fire({
                 title: 'SOPORTE IT PRODISMO',
                 html: `
@@ -245,13 +270,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const guiaPdfModuloUno = document.getElementById('guia-pdf-modulo-uno');
     if (guiaPdfModuloUno) {
         // Agregar evento de clic a la card
-        guiaPdfModuloUno.addEventListener('click', function() {
+        guiaPdfModuloUno.addEventListener('click', function () {
             // Crear un enlace temporal para descargar el PDF
             const link = document.createElement('a');
-            link.href = '../files_output/Instructivo_MS_Authenticator_MS_Teams_Rev00.pdf'; 
+            link.href = '../files_output/Instructivo_MS_Authenticator_MS_Teams_Rev00.pdf';
             link.download = 'Instructivo_MS_Authenticator_MS_Teams_Rev00.pdf';
             link.target = '_blank';
-            
+
             // Simular clic en el enlace
             document.body.appendChild(link);
             link.click();
@@ -293,7 +318,7 @@ if (phishingChartCtx) {
                     beginAtZero: true,
                     max: 100,
                     ticks: {
-                        callback: function(value) {
+                        callback: function (value) {
                             return value + "%";
                         }
                     }
@@ -312,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnFrauLeg.forEach(button => {
             button.addEventListener('click', (e) => {
                 const isCorrect = e.target.getAttribute('data-correct') === 'true';
-    
+
                 if (isCorrect) {
                     Swal.fire({
                         title: '¡Correcto! 😎',
@@ -335,17 +360,17 @@ document.addEventListener('DOMContentLoaded', () => {
 //---------------------------------------------------------------
 
 //------------------------ Modulo 3 ------------------------------
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Obtener la card de política por su ID
     const policyCard = document.getElementById('policy-card');
     const examLink = document.querySelector('a[href="./Examen_modulo3.html"]');
 
     if (policyCard) {
         // Agregar evento de clic a la card
-        policyCard.addEventListener('click', function() {
+        policyCard.addEventListener('click', function () {
             // Verificar si ya fue descargado
             const yaDescargado = localStorage.getItem('politicaDescargada') === 'true';
-            
+
             if (yaDescargado) {
                 // Mostrar alerta indicando que ya fue descargado
                 Swal.fire({
@@ -364,12 +389,12 @@ document.addEventListener('DOMContentLoaded', function() {
             link.href = '../files_output/MC211-IT-2 Política de Uso Aceptable de Recursos de Tecnologías de Info.pdf';
             link.download = 'MC211-IT-2_Politica_de_Uso_Aceptable.pdf';
             link.target = '_blank';
-            
+
             // Agregar evento para detectar cuando la descarga se complete
-            link.addEventListener('click', function() {
+            link.addEventListener('click', function () {
                 // Marcar en localStorage que el PDF fue descargado
                 localStorage.setItem('politicaDescargada', 'true');
-                
+
                 // Mostrar confirmación de descarga después de un breve delay
                 setTimeout(() => {
                     Swal.fire({
@@ -382,12 +407,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }, 1000);
             });
-            
+
             // Simular clic en el enlace
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             // Feedback visual
             policyCard.style.backgroundColor = '#e6f0f7';
             policyCard.style.transition = 'background-color 0.3s ease';
@@ -400,16 +425,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (examLink) { examLink.addEventListener('click', verificarAccesoExamen); }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Obtener la card de guía PDF por su ID
     const guiaPdf = document.getElementById('guia-pdf');
-    
+
     if (guiaPdf) {
         // Agregar evento de clic a la card
-        guiaPdf.addEventListener('click', function() {
+        guiaPdf.addEventListener('click', function () {
             // Verificar si ya fue descargado
             const guiaDescargada = localStorage.getItem('guiaPhishingDescargada') === 'true';
-            
+
             if (guiaDescargada) {
                 // Mostrar alerta indicando que ya fue descargado
                 Swal.fire({
@@ -424,15 +449,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Crear un enlace temporal para descargar el PDF
             const link = document.createElement('a');
-            link.href = '../files_output/I523-IT-3_Guía de Identificación de Phishing.pdf'; 
+            link.href = '../files_output/I523-IT-3_Guía de Identificación de Phishing.pdf';
             link.download = 'I523-IT-3_Guía de Identificación de Phishing.pdf';
             link.target = '_blank';
-            
+
             // Agregar evento para detectar cuando la descarga se complete
-            link.addEventListener('click', function() {
+            link.addEventListener('click', function () {
                 // Marcar en localStorage que la guía fue descargada
                 localStorage.setItem('guiaPhishingDescargada', 'true');
-                
+
                 // Mostrar confirmación de descarga después de un breve delay
                 setTimeout(() => {
                     Swal.fire({
@@ -444,12 +469,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }, 1000);
             });
-            
+
             // Simular clic en el enlace
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             // Feedback visual
             guiaPdf.style.backgroundColor = '#e6f0f7';
             guiaPdf.style.transition = 'background-color 0.3s ease';
@@ -464,11 +489,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function verificarAccesoExamen(event) {
     // Verificar si el PDF fue descargado
     const politicaDescargada = localStorage.getItem('politicaDescargada') === 'true';
-    
+
     if (!politicaDescargada) {
         // Prevenir la redirección
         event.preventDefault();
-        
+
         // Mostrar alerta con SweetAlert2
         Swal.fire({
             icon: 'warning',
@@ -498,11 +523,11 @@ function resetearDescargas() {
 function verificarAccesoExamen(event) {
     // Verificar si el PDF fue descargado
     const politicaDescargada = localStorage.getItem('politicaDescargada') === 'true';
-    
+
     if (!politicaDescargada) {
         // Prevenir la redirección
         event.preventDefault();
-        
+
         // Mostrar alerta con SweetAlert2
         Swal.fire({
             icon: 'warning',
@@ -515,7 +540,6 @@ function verificarAccesoExamen(event) {
     }
     // Si está descargado, permitirá la redirección normal
 }
-
 //------------------------ End Modulo 3 ------------------------------
 
 //------------------ Examen Modulo 3 ---------------------------------
@@ -572,6 +596,7 @@ const arrayUsuarios = [
     "edomig@prodismo.com",
     "ereyna@prodismo.com",
     "esaulo@prodismo.com",
+    "esanfelice@prodismo.com",
     "facturas@prodismo.com",
     "farrese@prodismo.com",
     "fbernaola@prodismo.com",
@@ -634,7 +659,6 @@ const arrayUsuarios = [
     "metrologiabsas@prodismo.com",
     "mfioramonte@prodismo.com",
     "mferrero@prodismo.com",
-    "mfrattini@prodismo.com",
     "mleiva@prodismo.com",
     "mmiserere@prodismo.com",
     "mmoreno@prodismo.com",
@@ -690,7 +714,7 @@ const arrayUsuarios = [
 //--------- Elementos comunes ambos examenes -----------
 function capitalizarTexto(texto) {
     if (!texto || typeof texto !== 'string') return '';
-    
+
     return texto.trim()
         .toLowerCase()
         .split(/\s+/)
@@ -701,12 +725,12 @@ function capitalizarTexto(texto) {
         .join(' ');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const inputs = document.querySelectorAll('#name, #surname, #nameFinal, #surnameFinal');
-    
+
     if (inputs) {
         inputs.forEach(input => {
-            input.addEventListener('blur', function() {
+            input.addEventListener('blur', function () {
                 if (this.value.trim() !== '') {
                     this.value = capitalizarTexto(this.value);
                 }
@@ -977,7 +1001,7 @@ const finalName = document.getElementById('final-name');
 const percentageDisplay = document.getElementById('percentage-display');
 const downloadPdfBtn = document.getElementById('download-pdf-btn');
 const btnSubmitForm = document.getElementById('btnSubmitForm');
-const contenedorBtnContinuar = document.getElementById('contenedor-btn-continuar')
+const contenedorBtnContinuar = document.getElementById('contenedor-btn-continuar');
 const continuarModulo4 = document.getElementById('continuar-modulo4');
 
 let currentQuestionIndex = 0;
@@ -992,21 +1016,21 @@ function validarEmailCorporativo(email) {
     if (email) {
         emailLower = email.toLowerCase().trim()
     }
-            
+
     if (!emailLower.endsWith('@prodismo.com')) {
         return {
             valido: false,
             mensaje: 'El email debe tener el dominio @prodismo.com'
         };
     }
-    
+
     if (!arrayUsuarios.includes(emailLower)) {
         return {
             valido: false,
             mensaje: 'El email corporativo no está autorizado para realizar el examen'
         };
     }
-    
+
     return {
         valido: true,
         mensaje: 'Email válido'
@@ -1026,19 +1050,19 @@ function validarFormularioCompleto() {
             mensaje: 'Todos los campos son obligatorios'
         };
     }
-    
+
     const validacionEmail = validarEmailCorporativo(corporateEmail)
     if (!validacionEmail.valido) {
         return validacionEmail;
     }
-    
+
     if (isNaN(employeeId) || employeeId <= 0) {
         return {
             valido: false,
             mensaje: 'El número de legajo debe ser un número válido'
         };
     }
-    
+
     return {
         valido: true,
         mensaje: 'Formulario válido'
@@ -1048,13 +1072,13 @@ function validarFormularioCompleto() {
 // Función para seleccionar 10 preguntas aleatorias del total de 20
 function seleccionarPreguntasAleatorias() {
     const preguntasAleatorias = [...quizData];
-    
+
     // Mezclar el array usando el algoritmo Fisher-Yates
     for (let i = preguntasAleatorias.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [preguntasAleatorias[i], preguntasAleatorias[j]] = [preguntasAleatorias[j], preguntasAleatorias[i]];
     }
-    
+
     // Tomar solo las primeras 10 preguntas
     return preguntasAleatorias.slice(0, 10);
 }
@@ -1062,12 +1086,12 @@ function seleccionarPreguntasAleatorias() {
 // Función para mezclar las opciones de respuesta de cada pregunta
 function mezclarOpciones(pregunta) {
     const opcionesMezcladas = [...pregunta.options];
-    
+
     for (let i = opcionesMezcladas.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [opcionesMezcladas[i], opcionesMezcladas[j]] = [opcionesMezcladas[j], opcionesMezcladas[i]];
     }
-    
+
     return {
         ...pregunta,
         options: opcionesMezcladas
@@ -1077,18 +1101,17 @@ function mezclarOpciones(pregunta) {
 // Función para iniciar el cuestionario
 function iniciarCuestionario() {
     const validacion = validarFormularioCompleto();
-    
+
     if (validacion.valido) {
         isFormSubmitted = true;
-        
+
         // 1. Seleccionar las 10 preguntas aleatorias al inicio (solo una vez)
         const preguntasAleatorias = seleccionarPreguntasAleatorias();
         preguntasSeleccionadas = preguntasAleatorias.map(pregunta => mezclarOpciones(pregunta));
-        
+
         personalForm.classList.add('hidden');
         quizContent.classList.remove('hidden');
         document.getElementById('final-name').textContent = document.getElementById('name').value + ' ' + document.getElementById('surname').value;
-        
 
         // 2. Iniciar la barra de progreso
         const progressFill = document.getElementById('progress-fill');
@@ -1120,23 +1143,23 @@ if (personalForm) {
 
 // Agregar evento al botón específico
 if (btnSubmitForm) {
-    btnSubmitForm.addEventListener('click', function(e) {
+    btnSubmitForm.addEventListener('click', function (e) {
         e.preventDefault();
         iniciarCuestionario();
     });
 }
 
 // Validación en tiempo real para el email
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('corporateEmail');
     const btnSubmitForm = document.getElementById('btnSubmitForm');
-    
+
     if (emailInput) {
-        emailInput.addEventListener('blur', function() {
+        emailInput.addEventListener('blur', function () {
             const email = this.value;
             if (email) {
                 const validacion = validarEmailCorporativo(email);
-                
+
                 if (!validacion.valido) {
                     this.classList.add('border-red-500', 'ring-2', 'ring-red-200');
                     let errorSpan = this.parentNode.querySelector('.email-error');
@@ -1146,7 +1169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.parentNode.appendChild(errorSpan);
                     }
                     errorSpan.textContent = validacion.mensaje;
-                    
+
                     if (btnSubmitForm) {
                         btnSubmitForm.disabled = true;
                         btnSubmitForm.classList.add('opacity-50', 'cursor-not-allowed');
@@ -1158,7 +1181,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (errorSpan) {
                         errorSpan.remove();
                     }
-                    
+
                     if (btnSubmitForm) {
                         btnSubmitForm.disabled = false;
                         btnSubmitForm.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -1166,26 +1189,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-        
-        emailInput.addEventListener('input', function() {
+
+        emailInput.addEventListener('input', function () {
             this.classList.remove('border-red-500', 'border-green-500', 'ring-2', 'ring-red-200', 'ring-green-200');
             const errorSpan = this.parentNode.querySelector('.email-error');
             if (errorSpan) {
                 errorSpan.remove();
             }
-            
+
             if (btnSubmitForm) {
                 btnSubmitForm.disabled = false;
                 btnSubmitForm.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         });
     }
-    
+
     const campos = ['name', 'surname', 'employeeId'];
     campos.forEach(campoId => {
         const campo = document.getElementById(campoId);
         if (campo && btnSubmitForm) {
-            campo.addEventListener('input', function() {
+            campo.addEventListener('input', function () {
                 const validacion = validarFormularioCompleto();
                 btnSubmitForm.disabled = !validacion.valido;
                 if (validacion.valido) {
@@ -1208,29 +1231,29 @@ function renderQuestion() {
     // Actualizar barra de progreso
     const progressPercentage = ((currentQuestionIndex) / preguntasSeleccionadas.length) * 100;
     document.getElementById('progress-fill').style.width = `${progressPercentage}%`;
-    
+
     question.options.forEach((option, index) => {
         const optionItem = document.createElement('div');
         optionItem.classList.add('option-item', 'p-3', 'border', 'rounded', 'mb-2', 'cursor-pointer', 'hover:bg-gray-100');
-        
+
         const radioInput = document.createElement('input');
         radioInput.type = 'radio';
         radioInput.name = `question-${currentQuestionIndex}`;
         radioInput.value = index;
         radioInput.id = `q${currentQuestionIndex}-opt${index}`;
         radioInput.classList.add('mr-2', 'cursor-pointer');
-        
+
         // 2. Deshabilitar la opción si ya se respondió esta pregunta
         if (userAnswers[currentQuestionIndex] !== undefined) {
             radioInput.disabled = true;
             optionItem.classList.add('disabled-option');
         }
-        
+
         const label = document.createElement('label');
         label.htmlFor = `q${currentQuestionIndex}-opt${index}`;
         label.textContent = option.text;
         label.classList.add('cursor-pointer', 'flex-1');
-        
+
         optionItem.appendChild(radioInput);
         optionItem.appendChild(label);
         optionsContainer.appendChild(optionItem);
@@ -1254,18 +1277,18 @@ function renderQuestion() {
 function handleAnswer(selectedIndex) {
     if (userAnswers[currentQuestionIndex] === undefined) {
         userAnswers[currentQuestionIndex] = selectedIndex;
-        
+
         const options = optionsContainer.querySelectorAll('.option-item');
         options.forEach(option => {
             option.classList.remove('bg-blue-100', 'border-blue-300');
             option.classList.add('disabled-option');
-            
+
             // Deshabilitar todos los inputs de radio
             const radioInput = option.querySelector('input[type="radio"]');
             if (radioInput) {
                 radioInput.disabled = true;
             }
-            
+
             // Remover event listeners para prevenir más clics
             option.replaceWith(option.cloneNode(true));
         });
@@ -1275,14 +1298,14 @@ function handleAnswer(selectedIndex) {
 
         options[selectedIndex].classList.add('bg-blue-100', 'border-blue-300');
     }
-    
+
     verificarCompletitud();
 }
 
 function verificarCompletitud() {
     // 3. Verificar si todas las 10 preguntas tienen respuesta
     const todasRespondidas = Object.keys(userAnswers).length === preguntasSeleccionadas.length;
-    
+
     if (todasRespondidas && currentQuestionIndex === preguntasSeleccionadas.length - 1) {
         showResultsBtn.classList.remove('hidden');
         nextBtn.classList.add('hidden');
@@ -1339,10 +1362,10 @@ function advanceProgress() {
     const progressFill = document.getElementById('progress-fill');
     let currentWidth = parseInt(progressFill.style.width) || 0;
     let newWidth = currentWidth + 10;
-    
+
     // No superar el 100%
     if (newWidth > 100) newWidth = 100;
-    
+
     progressFill.style.width = newWidth + '%';
 }
 
@@ -1359,52 +1382,52 @@ function restartExam() {
     const surnameValue = document.getElementById('surname').value;
     const employeeIdValue = document.getElementById('employeeId').value;
     const corporateEmailValue = document.getElementById('corporateEmail').value;
-    
+
     // 2. Ocultar resultados y mostrar formulario inicial
     document.getElementById('results-container').classList.add('hidden');
     document.getElementById('quiz-content').classList.add('hidden');
     document.getElementById('personal-form').classList.remove('hidden');
-    
+
     // 3. Reiniciar la barra de progreso
     const progressFill = document.getElementById('progress-fill');
     progressFill.style.width = '0%';
-    
+
     // 4. Limpiar las respuestas seleccionadas (si las hay)
     let selectedOptions = document.querySelectorAll('.option-item.selected');
     selectedOptions.forEach(option => {
         option.classList.remove('selected');
     });
-    
+
     // 5. Reiniciar variables del examen
     currentQuestionIndex = 0;
     userAnswers = {};
     finalScore = 0;
     preguntasSeleccionadas = [];
     isFormSubmitted = false;
-    
+
     // 6. Restaurar los valores del formulario
     document.getElementById('name').value = nameValue;
     document.getElementById('surname').value = surnameValue;
     document.getElementById('employeeId').value = employeeIdValue;
     document.getElementById('corporateEmail').value = corporateEmailValue;
-    
+
     // 7. Reiniciar estado de botones
     prevBtn.style.display = 'none';
     nextBtn.style.display = 'none';
     showResultsBtn.classList.add('hidden');
-    
+
     // 8. Habilitar el botón de comenzar examen si está deshabilitado
     if (btnSubmitForm) {
         btnSubmitForm.disabled = false;
         btnSubmitForm.classList.remove('opacity-50', 'cursor-not-allowed');
     }
-    
+
     // 9. Limpiar cualquier mensaje de error del email
     const emailInput = document.getElementById('corporateEmail');
     emailInput.classList.remove('border-red-500', 'border-green-500', 'ring-2', 'ring-red-200', 'ring-green-200');
     const errorSpan = emailInput.parentNode.querySelector('.email-error');
     if (errorSpan) { errorSpan.remove(); }
-    
+
     // 10. Limpiar el contenido de las preguntas y opciones
     questionText.textContent = '';
     optionsContainer.innerHTML = '';
@@ -1413,12 +1436,12 @@ function restartExam() {
     if (typeof currentQuestionIndexFinal !== 'undefined') { currentQuestionIndexFinal = 0; }
     if (typeof userAnswers !== 'undefined') { userAnswers = []; }
 
-    if (contenedorBtnContinuar) {contenedorBtnContinuar.classList.add('hidden')}
+    if (contenedorBtnContinuar) { contenedorBtnContinuar.classList.add('hidden') }
     if (continuarModulo4) {
         continuarModulo4.classList.add('hidden')
         continuarModulo4.setAttribute('disabled', true)
     }
-    
+
     // 12. Scroll hacia arriba para mejor experiencia de usuario
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1462,9 +1485,9 @@ function showResults() {
             finalScore++;
         }
     });
-    
+
     const percentage = (finalScore / preguntasSeleccionadas.length) * 100;
-    
+
     quizContent.classList.add('hidden');
     resultsContainer.classList.remove('hidden');
     scoreDisplay.textContent = `${finalScore}/${preguntasSeleccionadas.length}`;
@@ -1483,7 +1506,7 @@ if (downloadPdfBtn) {
 
         const restartExamBtn = document.getElementById('restart-btn')
         restartExamBtn.setAttribute('disabled', true)
-        
+
         const name = document.getElementById('name').value;
         const surname = document.getElementById('surname').value;
         const employeeId = document.getElementById('employeeId').value;
@@ -1499,28 +1522,28 @@ if (downloadPdfBtn) {
             restartExamBtn.setAttribute('disabled', true)
             continuarModulo4.classList.remove('hidden');
             continuarModulo4.removeAttribute('disabled');
-            continuarModulo4.addEventListener('click',  mostrarModalVerificacion );
+            continuarModulo4.addEventListener('click', mostrarModalVerificacion);
         }
 
         const iconOk = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAGHaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49J++7vycgaWQ9J1c1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCc/Pg0KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyI+PHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj48cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0idXVpZDpmYWY1YmRkNS1iYTNkLTExZGEtYWQzMS1kMzNkNzUxODJmMWIiIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIj48dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPjwvcmRmOkRlc2NyaXB0aW9uPjwvcmRmOlJERj48L3g6eG1wbWV0YT4NCjw/eHBhY2tldCBlbmQ9J3cnPz4slJgLAAAF40lEQVRYR62We2zV1R3AP+f3+91n7225t4VGodQWK1WzoiyOgFhTZQ40IxriKxnECGRzmy5Dx4gp4tAYRNENHdtIDBMt06mAURRN2DIcox1uU14ti6s8ZPT9ur2P3+Oe4x/tvfQ+Ctfq57/fOd9zzud8f+cllFKKiaAg4ZgoFG7Nja5r2REFIQoWkJLmc83sO/s3/tN3nLPRDobsYSQKn+6j3F/OzJKZ3HDJPBqmXk/YG8juIS8XF5AOTW2vsvVEE//uO05MWrh0Fy7NQBc6AEpJbOlgSwuBTmVRFUuqlvDgt5YztSiU3WMGFxQ40vFPHm55jH1dh/AYfgKGD4HIDsvBTCYYsoepKJrB2msfZcWVt2eHpBlX4K227TxwsJEBaRNyF2dXXxSBIJ6MEbESrKj9Cb+dvw5XnmWSV6Dp6B9YfrARjzuIT3OjyAkpGIWkO97DXdXLefWmZ3Mkcpz2te9iZXMjXncxPs31tQYHEGhM8U3mz+0v8dA/NmRXZ2aga6iduW8vpDNpEdA9Ex46JT12vSiSdMeHeLlhB8tqFqTLMzKw/tCTfJ4YIKB7JzS4QJBUDlE7RtyOY0orLSHQKXa7eezj9XTFY+k2aYHWzmaaTu0l7J004bQ7ysJMCl6Yt4U9C7Yzs+gS4tJM1/v0AKciR9nS+nq6LC2wre0VBqWDUcA2G4/exCCr6tZwf+1i6qc3sPSyW4lYw+l6haLEXcRrn/2JIduBlEDC7OPD/x8g6ApMaO4CQb/Zx81T72Dt7BUAmNYgu87sw+/yZ8R6dB/tkVb2n/sUUgLHez7hZKwLt2ZkBBeGIJ6MUuatYmv9RozRBK5rbuSvPUcJ6L6ceCkT7O84CCmB1r42ospGm0D6lXKIOZLfzHuO6mAYgD3/3cHzJ16j1BvKu57cmk5rfxukBE4Pn0GNM7hAYEmTWDKe05UAesx+HrhqFXdWzwfg7MAJftq8Do8rgD5On4am0xHvQKXXgDJHu8tEIDClyRTvNGaV1BIbvf1SdYPWANdNXsCG76waaZC0+PH+n/OFPYz/AueIEAJb2Ug1KjDeBWPJBCFPBXtvfZuPFr9H49Ur6E/0klQKS8bxGVPYWv8s/tEfv+njp3ino4WwuyRv6vOhAYRcoZEXRhaOdAh5yqgKliJ0gzVzfsVTdQ/Sn+im34zz9JyNzApXAHDw9Ac8fvT3hLzhvH2NRSpJ0Aiii1GBy0uqGbnZM/EZflr7D/GL5s3pstVzHufRq+7nnhn3sbJ2EQCD0XP88MBqpObBJXKulxws6VAZrIRUBurK6ig1/DhKZoUKAi4vm448wS9bXkiXPjF/E00NT49+KR7++yMci54jaPguMvcRHAmzy66BlEBFqJZrQjXEkuePzRQCjTJPCc8cXp8hoWkj/3374RfZdmovpZ78Wy4bqRwCrlJuvvR6SB/FwuDuqu9j2tH8u0HolI5KrG45/ztaO1t45F8bCXom5WmVn4gdYW75jcwKXwqMuY6j8S7m7l7A52YEv+7ObgeAVEkGrCgra39Ew5Q6njv8DJ9GzlBsFBU0e5D0mjF2fnc3iyuvg7ECAK8f28q9B9ZQ5pt8gRkphqwIUim8hg+f7ilocIGg1+zmtulL2X3Lr8+XZzzJlOS+D+7l5TN/odxbWlDHhSAQxJwIAddUPlr8HjOKy9J1mXtGaGyu38y8STV0WwPjHlBfhZHHaRRHeXnpxt9lDE6OAFDsL2fn95qYW3I5nYmer5UDgSBiD6KUn1catrGo4tvZIbkCAOXFVbx/2y6WVS6iN95DLJnIDrkgAoGjbDrjXVwWuJo9C99iSVV9dhjkrIE87Dj+RzYc2cKxoXbcuge/4UMX+e85qSRmMkHUiRNyT2ZpzTLWzv4ZYW/mo2QsFxUAiCYGeOOznbx58l0+6W+l1xzAViNPqhSa0AkYAaqDM1g47RZ+cMWd1IamZ8TkoyCBsXwxeJpjfSf4X+QkUScBCnTdYFrRNK6cNJPacA0uPV9+8vOVBb5pvgT1hG08V5BjBAAAAABJRU5ErkJggg=="
         const iconNoOk = "data:image/png;base64,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"
         const icon = passed ? iconOk : iconNoOk
-        
+
         // function numeroAleatorio() { return Math.floor(Math.random() * 50); }
         // const aprovalCode = arrayCodes[numeroAleatorio()]
         const aprovalCode = await obtenerCodigoAleatorio();
-    
+
 
         // Usamos un logo de marcador de posición y un texto de encabezado
         const logoBase64 = "data:image/png;base64,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";
 
         const localDate = now.toLocaleDateString();
-        const localTime = now.toLocaleTimeString('es-ES', { 
-                                                    hour12: false,
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                    second: '2-digit'
-                                                });
+        const localTime = now.toLocaleTimeString('es-ES', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
         // Header
         doc.addImage(logoBase64, "PNG", 10, 10, 48, 12);
         doc.setFontSize(14);
@@ -1537,35 +1560,35 @@ if (downloadPdfBtn) {
         doc.text(`Número de Legajo: ${employeeId}`, 15, 65);
         doc.text(`Email: ${email}`, 15, 75);
         doc.text(`Fecha y Hora: ${localDate} ${localTime}`, 15, 85);
-    
+
         // Resultados
         doc.text("Resultados:", 10, 100);
         doc.setFontSize(14);
         doc.text(`Puntaje: ${score}/${totalQuestions}`, 15, 110);
         doc.text(`Porcentaje de acierto: ${percentage.toFixed(0)}%`, 15, 120);
         doc.text(passed ? `Código: ${aprovalCode}` : " ", 15, 130);
-    
-        // Mensaje y icono de resultado
+
+        // Mensaje e icono de resultado
         doc.setFontSize(16);
         doc.addImage(icon, "PNG", 12, 162, 10, 10);
         doc.text(passed ? "¡Felicidades, has aprobado el examen!" : "Revisa los conceptos para volver a intentarlo.", 26, 170);
         doc.setFontSize(12);
         doc.text(passed ? `Puedes continuar con el Modulo 4: Accesos Remotos Seguros, ingresando el código: ${aprovalCode} ` : " ", 18, 180);
         doc.text(passed ? `Envía este archivo pdf a itprodismo@prodismo.com con el asunto:` : " ", 18, 190);
-        doc.text(passed ? `Examen Modulo 3 Capacitacion Seguridad 2025` : " ", 18, 200);
+        doc.text(passed ? `Examen Modulo 3 Capacitacion Seguridad 2026` : " ", 18, 200);
         doc.text(passed ? `Muchas gracias!` : " ", 18, 210);
 
         doc.text(`Equipo de IT`, 140, 220);
         doc.addImage(logoBase64, "PNG", 140, 222, 24, 8);
-    
+
         doc.setFontSize(10);
         doc.text("No es necesario imprimir este certificado", 100, 276, { align: 'center' });
 
         doc.line(10, 280, 200, 280); // Línea arriba del footer
         doc.setFontSize(10);
         doc.text("F314-IT-C-1", 12, 285);
-    
-        doc.save(`Resultado_Examen_Modulo3_${employeeId}_${name}-${surname}_${localDate.replace('/','_')}.pdf`);
+
+        doc.save(`Resultado_Examen_Modulo3_${employeeId}_${name}-${surname}_${localDate.replace('/', '_')}.pdf`);
     });
 }
 
@@ -1591,34 +1614,34 @@ function mostrarModalCodigoAcceso() {
         preConfirm: () => {
             const codigoInput = document.getElementById('codigo-acceso-input');
             const codigo = codigoInput ? codigoInput.value.trim().toUpperCase() : '';
-            
+
             if (!codigo) {
                 Swal.showValidationMessage('Por favor, ingresa un código');
                 return false;
             }
-            
+
             if (codigo.length !== 5) {
                 Swal.showValidationMessage('El código debe tener exactamente 5 caracteres');
                 return false;
             }
-            
+
             if (!arrayCodes.includes(codigo)) {
                 Swal.showValidationMessage('Código incorrecto. Verifica e intenta nuevamente.');
                 return false;
             }
-            
+
             return codigo;
         }
 
     }).then((result) => {
         if (result.isConfirmed) {
             const codigo = result.value;
-            
+
             // Guardar el código en localStorage para uso futuro
             localStorage.setItem('examen_aprobado', 'true');
             localStorage.setItem('codigo_acceso', codigo);
             localStorage.setItem('fecha_aprobacion', new Date().toISOString());
-            
+
             // Mostrar confirmación y redirigir
             Swal.fire({
                 icon: 'success',
@@ -1635,20 +1658,20 @@ function mostrarModalCodigoAcceso() {
             });
         }
     });
-    
+
     // Configurar el input después de que se muestre el modal
     setTimeout(() => {
         const codigoInput = document.getElementById('codigo-acceso-input');
         if (codigoInput) {
             codigoInput.focus();
-            
+
             // Auto-convertir a mayúsculas y limitar caracteres
-            codigoInput.addEventListener('input', function() {
+            codigoInput.addEventListener('input', function () {
                 this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 5);
             });
-            
+
             // Permitir enviar con Enter
-            codigoInput.addEventListener('keypress', function(e) {
+            codigoInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     const confirmButton = document.querySelector('.swal2-confirm');
                     if (confirmButton) confirmButton.click();
@@ -1664,27 +1687,27 @@ function verificarAprobacionPrevia() {
 }
 
 // Agregar evento al botón "Ya aprobado"
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const btnYaAprobado = document.getElementById('btnYaAprobado');
-    
+
     if (btnYaAprobado) {
-        btnYaAprobado.addEventListener('click', function(e) {
+        btnYaAprobado.addEventListener('click', function (e) {
             e.preventDefault();
             mostrarModalCodigoAcceso();
         });
-        
+
         // Verificar si ya está aprobado y mostrar información
         if (verificarAprobacionPrevia()) {
             const codigoGuardado = localStorage.getItem('codigo_acceso');
             const fechaAprobacion = localStorage.getItem('fecha_aprobacion');
-            
+
             // Agregar badge informativo al botón
             btnYaAprobado.innerHTML += `
                 <span class="ml-2 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                     <i class="fas fa-check mr-1"></i>Ya aprobado
                 </span>
             `;
-            
+
             // Tooltip con información
             btnYaAprobado.title = `Examen aprobado el ${new Date(fechaAprobacion).toLocaleDateString()}. Código: ${codigoGuardado}`;
         }
@@ -1761,8 +1784,8 @@ function mostrarModalVerificacion() {
     // Ocultar el contenido principal de la página
     const main = document.querySelector('main')
     const footer = document.querySelector('footer')
-    if (main) { main.style.display = 'none'};
-    if (footer) {footer.style.display = 'none'};
+    if (main) { main.style.display = 'none' };
+    if (footer) { footer.style.display = 'none' };
 
     // Agregar funcionalidad al input y botón
     const codigoInput = document.getElementById('codigo-input');
@@ -1770,29 +1793,29 @@ function mostrarModalVerificacion() {
     const errorMessage = document.getElementById('error-message');
 
     // Función para auto-convertir a mayúsculas y limitar a 5 caracteres
-    codigoInput.addEventListener('input', function() {
+    codigoInput.addEventListener('input', function () {
         this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 5);
     });
 
     // Función de verificación
     function verificarCodigo() {
         const codigo = codigoInput.value.trim();
-        
+
         if (!codigo) {
             errorMessage.textContent = 'Por favor, ingresa un código.';
             errorMessage.classList.remove('hidden');
             codigoInput.focus();
             return;
         }
-        
-        console.log('1788-codigo: ', codigo)
+
+        // console.log('1788-codigo: ', codigo)
 
         if (verificarCodigoAcceso(codigo)) {
             // Código correcto - guardar en localStorage y mostrar contenido
             localStorage.setItem('modulo4_verificado', 'true');
             localStorage.setItem('codigo_usado', codigo);
-            
-             // Ocultar modal y mostrar contenido después de un breve delay
+
+            // Ocultar modal y mostrar contenido después de un breve delay
             modalOverlay.remove();
 
             // Mostrar mensaje de éxito
@@ -1817,7 +1840,7 @@ function mostrarModalVerificacion() {
             errorMessage.classList.remove('hidden');
             codigoInput.focus();
             codigoInput.select();
-            
+
             // Agregar efecto de shake al input
             codigoInput.style.animation = 'shake 0.5s';
             setTimeout(() => {
@@ -1828,15 +1851,15 @@ function mostrarModalVerificacion() {
 
     // Event listeners
     btnVerificar.addEventListener('click', verificarCodigo);
-    
-    codigoInput.addEventListener('keypress', function(e) {
+
+    codigoInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             verificarCodigo();
         }
     });
 
     // Prevenir que se cierre el modal haciendo clic fuera
-    modalOverlay.addEventListener('click', function(e) {
+    modalOverlay.addEventListener('click', function (e) {
         if (e.target === modalOverlay) {
             // Opcional: puedes agregar un mensaje de que debe ingresar el código
             codigoInput.focus();
@@ -1855,7 +1878,7 @@ function verificarAccesoPrevio() {
 }
 
 // Ejecutar cuando se carga la página
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     if (document.body.getAttribute('data-requiere-verificacion') === 'true') {
         if (!verificarAccesoPrevio()) {
             setTimeout(() => {
@@ -1877,17 +1900,17 @@ function resetearVerificacionModulo4() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     if (document.body.getAttribute('data-requiere-verificacion') === 'true') {
         // Obtener la card de acuerdo Modelo por su ID
         const acuerdoModelo = document.getElementById('acuerdoModelo');
-    
+
         if (acuerdoModelo) {
             // Agregar evento de clic a la card
-            acuerdoModelo.addEventListener('click', function() {
+            acuerdoModelo.addEventListener('click', function () {
                 // Verificar si ya fue descargado
                 const yaDescargado = localStorage.getItem('acuerdoModeloDescargada') === 'true';
-                
+
                 if (yaDescargado) {
                     // Mostrar alerta indicando que ya fue descargado
                     Swal.fire({
@@ -1900,18 +1923,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                     return;
                 }
-    
+
                 // Crear un enlace temporal para descargar el PDF
                 const link = document.createElement('a');
                 link.href = '../files_output/MC214-IT-1 Acuerdo Modelo de Teletrabajo.pdf';
                 link.download = 'MC214-IT-1_Acuerdo_Modelo_Teletrabajo.pdf';
                 link.target = '_blank';
-                
+
                 // Agregar evento para detectar cuando la descarga se complete
-                link.addEventListener('click', function() {
+                link.addEventListener('click', function () {
                     // Marcar en localStorage que el PDF fue descargado
                     localStorage.setItem('acuerdoModeloDescargada', 'true');
-                    
+
                     // Mostrar confirmación de descarga después de un breve delay
                     setTimeout(() => {
                         Swal.fire({
@@ -1923,12 +1946,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                     }, 1500);
                 });
-                
+
                 // Simular clic en el enlace
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                
+
                 // Feedback visual
                 acuerdoModelo.style.backgroundColor = '#e6f0f7';
                 acuerdoModelo.style.transition = 'background-color 0.3s ease';
@@ -1937,10 +1960,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 1000);
             });
         }
-        
+
         const contactoIt = document.getElementById('contactoIt');
         if (contactoIt) {
-            contactoIt.addEventListener('click', function() {
+            contactoIt.addEventListener('click', function () {
                 Swal.fire({
                     title: 'SOPORTE IT PRODISMO',
                     html: `
@@ -1988,13 +2011,13 @@ document.addEventListener('DOMContentLoaded', function() {
 //---------------------- End Modulo 4 -------------------------------
 
 //---------------------- Modulo 5 -----------------------------------
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const contactoIt = document.getElementById('contactoIt');
-        if (contactoIt) {
-            contactoIt.addEventListener('click', function() {
-                Swal.fire({
-                    title: 'SOPORTE IT PRODISMO',
-                    html: `
+    if (contactoIt) {
+        contactoIt.addEventListener('click', function () {
+            Swal.fire({
+                title: 'SOPORTE IT PRODISMO',
+                html: `
                         <div class="text-left text-gray-700 leading-relaxed">
                             <p class="mb-2">Para consultas relacionadas con IT y Seguridad, contacta a:</p>
                             <ul class="list-disc list-inside space-y-1">
@@ -2019,21 +2042,21 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p class="mt-4 text-sm text-gray-600 text-center">Estamos aquí para ayudarte a resolver cualquier duda.</p>
                         </div>
                     `,
-                    imageUrl: "../images/ITProdimo_logo.png",
-                    showCloseButton: true, // Muestra el botón de cerrar (la "X")
-                    showConfirmButton: true, // Muestra el botón de "OK"
-                    confirmButtonText: 'Entendido',
-                    confirmButtonColor: '#08089d', // Color del botón de confirmación
-                    allowOutsideClick: false, // No se puede cerrar haciendo clic fuera del modal
-                    customClass: {
-                        popup: 'rounded-lg shadow-xl', // Clases de Tailwind para el estilo del popup
-                        title: 'text-2xl font-bold text-gray-800',
-                        htmlContainer: 'text-base',
-                    },
-                    width: '500px', // Ancho del modal, para que no ocupe toda la pantalla
-                });
+                imageUrl: "../images/ITProdimo_logo.png",
+                showCloseButton: true, // Muestra el botón de cerrar (la "X")
+                showConfirmButton: true, // Muestra el botón de "OK"
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#08089d', // Color del botón de confirmación
+                allowOutsideClick: false, // No se puede cerrar haciendo clic fuera del modal
+                customClass: {
+                    popup: 'rounded-lg shadow-xl', // Clases de Tailwind para el estilo del popup
+                    title: 'text-2xl font-bold text-gray-800',
+                    htmlContainer: 'text-base',
+                },
+                width: '500px', // Ancho del modal, para que no ocupe toda la pantalla
             });
-        }
+        });
+    }
 });
 // Array de situaciones de riesgo (7 situaciones)
 const situacionesRiesgo = [
@@ -2122,22 +2145,22 @@ function mostrarSituacion() {
         mostrarModalCompletado();
         return;
     }
-    
+
     // Seleccionar siguiente situación no mostrada
     const situacion = situacionesRiesgo[situacionesMostradas.length];
     situacionActual = situacionesMostradas.length;
-    
+
     // Actualizar el modal
     modalTitle.textContent = `Situación ${situacion.id}: ${situacion.titulo}`;
     situacionImage.src = situacion.imagen;
     situacionImage.alt = situacion.titulo;
     situacionDesc.textContent = situacion.descripcion;
-    
+
     // Actualizar progreso
     const progreso = ((situacionesMostradas.length + 1) / situacionesRiesgo.length) * 100;
     progresoTexto.textContent = `Situación ${situacionesMostradas.length + 1} de ${situacionesRiesgo.length}`;
     progresoBarra.style.width = `${progreso}%`;
-    
+
     // Mostrar modal
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -2147,7 +2170,7 @@ function mostrarSituacion() {
 function manejarRespuesta(esCorrectoSeleccionado) {
     const situacion = situacionesRiesgo[situacionActual];
     const respuestaCorrecta = !situacion.esCorrecto; // Todas son situaciones incorrectas
-    
+
     if (esCorrectoSeleccionado === respuestaCorrecta) {
         // Respuesta correcta (seleccionó "Incorrecto" para situaciones de riesgo)
         Swal.fire({
@@ -2171,12 +2194,12 @@ function manejarRespuesta(esCorrectoSeleccionado) {
             timerProgressBar: true
         });
     }
-    
+
     // Marcar situación como mostrada
     if (!situacionesMostradas.includes(situacionActual)) {
         situacionesMostradas.push(situacionActual);
     }
-    
+
     // Mostrar siguiente situación después del alert
     setTimeout(() => {
         if (situacionesMostradas.length < situacionesRiesgo.length) {
@@ -2214,48 +2237,48 @@ function cerrarModal() {
 }
 
 // Event Listeners
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     const identificaRiesgos = document.getElementById('identificaRiesgos')
     if (identificaRiesgos) {
-        identificaRiesgos.addEventListener('click', function() {
+        identificaRiesgos.addEventListener('click', function () {
             mostrarSituacion();
         });
 
         // Hacer el card clickeable visualmente
         identificaRiesgos.style.cursor = 'pointer';
         identificaRiesgos.classList.add('hover:shadow-lg', 'transition-shadow', 'duration-200');
-        
+
         // Botones del modal
         btnCorrecto.addEventListener('click', () => manejarRespuesta(true));
         btnIncorrecto.addEventListener('click', () => manejarRespuesta(false));
-        
+
         // Cerrar modal
         closeModal.addEventListener('click', cerrarModal);
-        
+
         // Cerrar modal al hacer clic fuera
-        modal.addEventListener('click', function(e) {
+        modal.addEventListener('click', function (e) {
             if (e.target === modal) {
                 cerrarModal();
             }
         });
-    
+
         // Cerrar con tecla Escape
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
                 cerrarModal();
             }
         });
     }
-    
+
     // Obtener la card de acuerdo Modelo por su ID
     const politicaMinimoPrivilegio = document.getElementById('politica-minimo-privilegio');
     if (politicaMinimoPrivilegio) {
         // Agregar evento de clic a la card
-        politicaMinimoPrivilegio.addEventListener('click', function() {
+        politicaMinimoPrivilegio.addEventListener('click', function () {
             // Verificar si ya fue descargado
             const yaDescargado = localStorage.getItem('politicaMinimoPrivilegioDescargada') === 'true';
-            
+
             if (yaDescargado) {
                 // Mostrar alerta indicando que ya fue descargado
                 Swal.fire({
@@ -2274,12 +2297,12 @@ document.addEventListener('DOMContentLoaded', function() {
             link.href = '../files_output/MC421-IT-2 Política de Mínimos Privilegios.pdf';
             link.download = 'MC421-IT-2_Política_Mínimos_Privilegios.pdf';
             link.target = '_blank';
-            
+
             // Agregar evento para detectar cuando la descarga se complete
-            link.addEventListener('click', function() {
+            link.addEventListener('click', function () {
                 // Marcar en localStorage que el PDF fue descargado
                 localStorage.setItem('politicaMinimoPrivilegioDescargada', 'true');
-                
+
                 // Mostrar confirmación de descarga después de un breve delay
                 setTimeout(() => {
                     Swal.fire({
@@ -2291,12 +2314,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }, 1500);
             });
-            
+
             // Simular clic en el enlace
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             // Feedback visual
             politicaMinimoPrivilegio.style.backgroundColor = '#e6f0f7';
             politicaMinimoPrivilegio.style.transition = 'background-color 0.3s ease';
@@ -2311,20 +2334,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 //---------------------- Modulo 6 -------------------------------------------
-document.addEventListener('DOMContentLoaded', function() {
-    
+document.addEventListener('DOMContentLoaded', function () {
+
     const policyBtnConfirm = document.getElementById('policyBtnConfirm');
     if (policyBtnConfirm) {
-        document.getElementById('policyBtnConfirm').addEventListener('click', function() {
+        document.getElementById('policyBtnConfirm').addEventListener('click', function () {
             confirmPolicy('Escritorio y Pantalla Limpios');
         });
-        
+
     }
-    
+
     // Agregar efecto de clic a los elementos de la política
     const policyItems = document.querySelectorAll('.policy-item');
     policyItems.forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function () {
             this.style.transform = 'scale(0.98)';
             setTimeout(() => {
                 this.style.transform = '';
@@ -2334,7 +2357,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const custodyBtn = document.getElementById('custodyBtn');
     if (custodyBtn) {
-        custodyBtn.addEventListener('click', function() {
+        custodyBtn.addEventListener('click', function () {
             confirmPolicy('Cadena de Custodia');
         });
     }
@@ -2368,7 +2391,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Agregar efecto de clic a los elementos de la cadena de custodia
 const custodyItems = document.querySelectorAll('.custody-item');
 custodyItems.forEach(item => {
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
         this.style.transform = 'scale(0.98)';
         setTimeout(() => {
             this.style.transform = '';
@@ -2380,7 +2403,7 @@ custodyItems.forEach(item => {
 function verificarConfirmaciones() {
     const policyConfirmed = document.getElementById('policyBtnConfirm').classList.contains('confirmed');
     const custodyConfirmed = document.getElementById('custodyBtn').classList.contains('confirmed');
-    
+
     return policyConfirmed && custodyConfirmed;
 }
 
@@ -2399,10 +2422,10 @@ function mostrarAlertaError() {
 function configurarBotonesConfirmacion() {
     const policyBtn = document.getElementById('policyBtnConfirm');
     const custodyBtn = document.getElementById('custodyBtn');
-    
+
     if (policyBtn) {
         // Configurar evento para el primer botón
-        policyBtn.addEventListener('click', function() {
+        policyBtn.addEventListener('click', function () {
             this.classList.add('confirmed');
             this.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -2414,10 +2437,10 @@ function configurarBotonesConfirmacion() {
             this.disabled = true;
         });
     }
-    
+
     if (custodyBtn) {
         // Configurar evento para el segundo botón
-        custodyBtn.addEventListener('click', function() {
+        custodyBtn.addEventListener('click', function () {
             this.classList.add('confirmed');
             this.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -2434,9 +2457,9 @@ function configurarBotonesConfirmacion() {
 // Función para interceptar el clic en el enlace del examen
 function configurarEnlaceExamen() {
     const enlaceExamen = document.querySelector('a[href="./Examen_final_SI.html"]');
-    
+
     if (enlaceExamen) {
-        enlaceExamen.addEventListener('click', function(e) {
+        enlaceExamen.addEventListener('click', function (e) {
             if (!verificarConfirmaciones()) {
                 e.preventDefault(); // Prevenir la navegación
                 mostrarAlertaError();
@@ -2469,18 +2492,18 @@ document.head.appendChild(estilo);
 
 
 // Inicializar cuando el DOM esté cargado
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     configurarBotonesConfirmacion();
     configurarEnlaceExamen();
 });
 //------------------ End Modulo 6 ----------------------------------------
 
 //------------------ Previa Examen Final ----------------------------------------
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Configurar el evento para el botón de código de acceso (si existe en esta página)
     const btnCodigoAcceso = document.getElementById('btnCodigoAcceso');
     if (btnCodigoAcceso) {
-        btnCodigoAcceso.addEventListener('click', function() {
+        btnCodigoAcceso.addEventListener('click', function () {
             mostrarModalVerificacionFinal();
         });
     }
@@ -2491,10 +2514,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (btnVerificarCodigo && accessCodeInput) {
         // Función para verificar el código de acceso
-        btnVerificarCodigo.addEventListener('click', function() {
+        btnVerificarCodigo.addEventListener('click', function () {
             const accessCode = accessCodeInput.value.trim().toUpperCase();
             const examLinkContainer = document.getElementById('examLinkContainer');
-            
+
             if (!accessCode) {
                 Swal.fire({
                     title: 'Código Requerido',
@@ -2504,21 +2527,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 return;
             }
-            
+
             if (typeof arrayCodes !== 'undefined' && arrayCodes.includes(accessCode)) {
                 // Código válido
                 accessCodeInput.classList.add('access-granted');
                 if (examLinkContainer) {
                     examLinkContainer.classList.remove('hidden');
                 }
-                
+
                 Swal.fire({
                     title: '¡Código Válido!',
                     text: 'Acceso concedido al examen final',
                     icon: 'success',
                     confirmButtonColor: '#00446A'
                 });
-                
+
                 // Scroll suave al enlace del examen
                 if (examLinkContainer) {
                     examLinkContainer.scrollIntoView({ behavior: 'smooth' });
@@ -2535,20 +2558,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Permitir presionar Enter para verificar el código
-        accessCodeInput.addEventListener('keypress', function(e) {
+        accessCodeInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 btnVerificarCodigo.click();
             }
         });
 
         // Formatear automáticamente el código (5 caracteres máx)
-        accessCodeInput.addEventListener('input', function(e) {
+        accessCodeInput.addEventListener('input', function (e) {
             let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-            
+
             if (value.length > 5) {
                 value = value.substring(0, 5);
             }
-            
+
             e.target.value = value;
         });
     }
@@ -2645,14 +2668,14 @@ function mostrarModalVerificacionFinal() {
 
     if (codigoInputFinalExam && btnVerificarFinalExam && errorMessageFinalExam) {
         // Función para auto-convertir a mayúsculas y limitar a 5 caracteres
-        codigoInputFinalExam.addEventListener('input', function() {
+        codigoInputFinalExam.addEventListener('input', function () {
             this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 5);
         });
 
         // Función de verificación
         function verificarCodigoFinal() {
             const codigo = codigoInputFinalExam.value.trim();
-            
+
             if (!codigo) {
                 errorMessageFinalExam.textContent = 'Por favor, ingresa un código.';
                 errorMessageFinalExam.classList.remove('hidden');
@@ -2660,7 +2683,7 @@ function mostrarModalVerificacionFinal() {
                 return;
             }
 
-            if (verificarCodigoAccesoFinal(codigo)) {            
+            if (verificarCodigoAccesoFinal(codigo)) {
                 // Mostrar mensaje de éxito
                 Swal.fire({
                     icon: 'success',
@@ -2682,7 +2705,7 @@ function mostrarModalVerificacionFinal() {
                 errorMessageFinalExam.classList.remove('hidden');
                 codigoInputFinalExam.focus();
                 codigoInputFinalExam.select();
-                
+
                 // Agregar efecto de shake al input
                 codigoInputFinalExam.style.animation = 'shake 0.5s';
                 setTimeout(() => {
@@ -2693,15 +2716,15 @@ function mostrarModalVerificacionFinal() {
 
         // Event listeners
         btnVerificarFinalExam.addEventListener('click', verificarCodigoFinal);
-        
-        codigoInputFinalExam.addEventListener('keypress', function(e) {
+
+        codigoInputFinalExam.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 verificarCodigoFinal();
             }
         });
 
         // Prevenir que se cierre el modal haciendo clic fuera
-        modalOverlayFinalExam.addEventListener('click', function(e) {
+        modalOverlayFinalExam.addEventListener('click', function (e) {
             if (e.target === modalOverlayFinalExam) {
                 codigoInputFinalExam.focus();
             }
@@ -2718,7 +2741,7 @@ function mostrarModalVerificacionFinal() {
 function habilitarEnlaceExamenFinal(modalOverlayFinalExam) {
     // Buscar el contenedor del botón de verificación
     const btnVerificarContainer = document.getElementById('btn-verificar-finalExam')?.parentNode;
-    
+
     if (btnVerificarContainer) {
         // Crear botón para ir al examen final
         const btnIrAlExamen = document.createElement('button');
@@ -2730,44 +2753,44 @@ function habilitarEnlaceExamenFinal(modalOverlayFinalExam) {
             </svg>
             Ir al Examen Final
         `;
-        
+
         // Agregar evento click para redirigir
-        btnIrAlExamen.addEventListener('click', function() {
+        btnIrAlExamen.addEventListener('click', function () {
             window.location.href = "./Examen_final_10.html";
         });
-        
+
         // Insertar el botón después del botón de verificación
         btnVerificarContainer.parentNode.insertBefore(btnIrAlExamen, btnVerificarContainer.nextSibling);
-        
+
         // Ocultar el botón de verificación ya que el código fue aceptado
         const btnVerificar = document.getElementById('btn-verificar-finalExam');
         if (btnVerificar) btnVerificar.style.display = 'none';
-        
+
         // También ocultar el input, mensaje de error, label y footer
         const codigoInput = document.getElementById('codigo-input-finalExam');
         const errorMessage = document.getElementById('error-message-finalExam');
         const labelInput = document.getElementById('label-codigo-input-finalExam');
         const footerModalFinal = document.getElementById('footer-modal-final');
-        
+
         if (codigoInput) codigoInput.style.display = 'none';
         if (errorMessage) errorMessage.style.display = 'none';
         if (labelInput) labelInput.style.display = 'none';
         if (footerModalFinal) footerModalFinal.textContent = 'Muchos éxitos!!';
-        
+
         // Actualizar el mensaje del modal
         const tituloModal = modalOverlayFinalExam.querySelector('h2');
         const descripcionModal = modalOverlayFinalExam.querySelector('p.text-gray-600');
-        
+
         if (tituloModal) {
             tituloModal.textContent = '¡Código Verificado Correctamente!';
             tituloModal.className = 'text-2xl font-bold text-[#009E73] mb-2';
         }
-        
+
         if (descripcionModal) {
             descripcionModal.textContent = 'Ahora puedes acceder al examen final. Haz clic en el botón de abajo para comenzar.';
             descripcionModal.className = 'text-gray-600 mb-4';
         }
-        
+
         // Cambiar el icono del modal a checkmark
         const iconoModal = modalOverlayFinalExam.querySelector('.text-6xl');
         if (iconoModal) {
@@ -2775,7 +2798,6 @@ function habilitarEnlaceExamenFinal(modalOverlayFinalExam) {
         }
     }
 }
-
 //------------------ End Previa Examen Final ----------------------------------------
 
 //------------------ Examen Final 10 preguntas -------------------------------
@@ -3092,14 +3114,14 @@ function validarEmailCorporativoFinal(email) {
             mensaje: 'El email debe tener el dominio @prodismo.com'
         };
     }
-    
+
     if (!arrayUsuarios.includes(emailLower)) {
         return {
             valido: false,
             mensaje: 'El email corporativo no está autorizado para realizar el examen'
         };
     }
-    
+
     return {
         valido: true,
         mensaje: 'Email válido'
@@ -3110,7 +3132,7 @@ function validarEmailCorporativoFinal(email) {
 function validarFormularioCompletoFinal() {
     const nameFinal = document.getElementById('nameFinal').value.trim();
     const surnameFinal = document.getElementById('surnameFinal').value.trim();
-    const employeeIdFinal = document.getElementById('employeeIdFinal').value.trim(); 
+    const employeeIdFinal = document.getElementById('employeeIdFinal').value.trim();
     const corporateEmailFinal = document.getElementById('corporateEmailFinal').value.trim();
 
     if (!nameFinal || !surnameFinal || !employeeIdFinal || !corporateEmailFinal) {
@@ -3119,19 +3141,19 @@ function validarFormularioCompletoFinal() {
             mensaje: 'Todos los campos son obligatorios'
         };
     }
-    
+
     const validacionEmailFinal = validarEmailCorporativoFinal(corporateEmailFinal);
     if (!validacionEmailFinal.valido) {
         return validacionEmailFinal;
     }
-    
+
     if (isNaN(employeeIdFinal) || employeeIdFinal <= 0) {
         return {
             valido: false,
             mensaje: 'El número de legajo debe ser un número válido'
         };
     }
-    
+
     return {
         valido: true,
         mensaje: 'Formulario válido'
@@ -3141,13 +3163,13 @@ function validarFormularioCompletoFinal() {
 // Función para seleccionar 10 preguntas aleatorias del total
 function seleccionarPreguntasAleatoriasFinal() {
     const preguntasAleatoriasFinal = [...quizDataFinal];
-    
+
     // Mezclar el array usando el algoritmo Fisher-Yates
     for (let i = preguntasAleatoriasFinal.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [preguntasAleatoriasFinal[i], preguntasAleatoriasFinal[j]] = [preguntasAleatoriasFinal[j], preguntasAleatoriasFinal[i]];
     }
-    
+
     // Tomar solo las primeras 10 preguntas
     return preguntasAleatoriasFinal.slice(0, 10);
 }
@@ -3155,12 +3177,12 @@ function seleccionarPreguntasAleatoriasFinal() {
 // Función para mezclar las opciones de respuesta de cada pregunta
 function mezclarOpcionesFinal(pregunta) {
     const opcionesMezcladasFinal = [...pregunta.options];
-    
+
     for (let i = opcionesMezcladasFinal.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [opcionesMezcladasFinal[i], opcionesMezcladasFinal[j]] = [opcionesMezcladasFinal[j], opcionesMezcladasFinal[i]];
     }
-    
+
     return {
         ...pregunta,
         options: opcionesMezcladasFinal
@@ -3170,10 +3192,10 @@ function mezclarOpcionesFinal(pregunta) {
 // Función para iniciar el cuestionario
 function iniciarCuestionarioFinal() {
     const validacion = validarFormularioCompletoFinal();
-    
+
     if (validacion.valido) {
         isFormSubmittedFinal = true;
-        
+
         // 1. Seleccionar las 10 preguntas aleatorias al inicio (solo una vez)
         const preguntasAleatoriasFinal = seleccionarPreguntasAleatoriasFinal();
         preguntasSeleccionadasFinal = preguntasAleatoriasFinal.map(pregunta => mezclarOpcionesFinal(pregunta));
@@ -3185,10 +3207,10 @@ function iniciarCuestionarioFinal() {
         // 2. Iniciar la barra de progreso
         const progressFill = document.getElementById('progress-fill-final');
         progressFill.style.width = '0%';
-        
+
         // Actualizar contador de preguntas
         document.getElementById('total-questions-final').textContent = preguntasSeleccionadasFinal.length;
-        
+
         renderQuestionFinal();
 
     } else {
@@ -3212,23 +3234,23 @@ if (personalFormFinal) {
 
 // Agregar evento al botón específico
 if (btnSubmitFormFinal) {
-    btnSubmitFormFinal.addEventListener('click', function(e) {
+    btnSubmitFormFinal.addEventListener('click', function (e) {
         e.preventDefault();
         iniciarCuestionarioFinal();
     });
 }
 
 // Validación en tiempo real para el email
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('corporateEmailFinal');
     const btnSubmitForm = document.getElementById('btnSubmitForm-final');
-    
+
     if (emailInput) {
-        emailInput.addEventListener('blur', function() {
+        emailInput.addEventListener('blur', function () {
             const email = this.value;
             if (email) {
                 const validacion = validarEmailCorporativoFinal(email);
-                
+
                 if (!validacion.valido) {
                     this.classList.add('border-red-500', 'ring-2', 'ring-red-200');
                     let errorSpan = this.parentNode.querySelector('.email-error');
@@ -3238,7 +3260,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.parentNode.appendChild(errorSpan);
                     }
                     errorSpan.textContent = validacion.mensaje;
-                    
+
                     if (btnSubmitForm) {
                         btnSubmitForm.disabled = true;
                         btnSubmitForm.classList.add('opacity-50', 'cursor-not-allowed');
@@ -3250,7 +3272,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (errorSpan) {
                         errorSpan.remove();
                     }
-                    
+
                     if (btnSubmitForm) {
                         btnSubmitForm.disabled = false;
                         btnSubmitForm.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -3258,26 +3280,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-        
-        emailInput.addEventListener('input', function() {
+
+        emailInput.addEventListener('input', function () {
             this.classList.remove('border-red-500', 'border-green-500', 'ring-2', 'ring-red-200', 'ring-green-200');
             const errorSpan = this.parentNode.querySelector('.email-error');
             if (errorSpan) {
                 errorSpan.remove();
             }
-            
+
             if (btnSubmitForm) {
                 btnSubmitForm.disabled = false;
                 btnSubmitForm.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         });
     }
-    
+
     const campos = ['nameFinal', 'surnameFinal', 'employeeIdFinal'];
     campos.forEach(campoId => {
         const campo = document.getElementById(campoId);
         if (campo && btnSubmitForm) {
-            campo.addEventListener('input', function() {
+            campo.addEventListener('input', function () {
                 const validacion = validarFormularioCompletoFinal();
                 btnSubmitForm.disabled = !validacion.valido;
                 if (validacion.valido) {
@@ -3296,33 +3318,33 @@ function renderQuestionFinal() {
     questionTextFinal.textContent = `Pregunta ${currentQuestionIndexFinal + 1}/${preguntasSeleccionadasFinal.length}: ${question.question}`;
     optionsContainerFinal.innerHTML = '';
     currentQuestionFinal.textContent = `${currentQuestionIndexFinal + 1}`
-    
+
     // Actualizar barra de progreso
     const progressPercentageFinal = ((currentQuestionIndexFinal) / preguntasSeleccionadasFinal.length) * 100;
     document.getElementById('progress-fill-final').style.width = `${progressPercentageFinal}%`;
-        
+
     question.options.forEach((option, index) => {
         const optionItem = document.createElement('div');
         optionItem.classList.add('option-item', 'p-3', 'border', 'rounded', 'mb-2', 'cursor-pointer', 'hover:bg-gray-100');
-        
+
         const radioInput = document.createElement('input');
         radioInput.type = 'radio';
         radioInput.name = `question-${currentQuestionIndexFinal}`;
         radioInput.value = index;
         radioInput.id = `q${currentQuestionIndexFinal}-opt${index}`;
         radioInput.classList.add('mr-2', 'cursor-pointer');
-        
+
         // 2. Deshabilitar la opción si ya se respondió esta pregunta
         if (userAnswersFinal[currentQuestionIndexFinal] !== undefined) {
             radioInput.disabled = true;
             optionItem.classList.add('disabled-option');
         }
-        
+
         const label = document.createElement('label');
         label.htmlFor = `q${currentQuestionIndexFinal}-opt${index}`;
         label.textContent = option.text;
         label.classList.add('cursor-pointer', 'flex-1');
-        
+
         optionItem.appendChild(radioInput);
         optionItem.appendChild(label);
         optionsContainerFinal.appendChild(optionItem);
@@ -3346,18 +3368,18 @@ function renderQuestionFinal() {
 function handleAnswerFinal(selectedIndex) {
     if (userAnswersFinal[currentQuestionIndexFinal] === undefined) {
         userAnswersFinal[currentQuestionIndexFinal] = selectedIndex;
-        
+
         const options = optionsContainerFinal.querySelectorAll('.option-item');
         options.forEach(option => {
             option.classList.remove('bg-blue-100', 'border-blue-300');
             option.classList.add('disabled-option');
-            
+
             // Deshabilitar todos los inputs de radio
             const radioInput = option.querySelector('input[type="radio"]');
             if (radioInput) {
                 radioInput.disabled = true;
             }
-            
+
             // Remover event listeners para prevenir más clics
             option.replaceWith(option.cloneNode(true));
         });
@@ -3367,14 +3389,14 @@ function handleAnswerFinal(selectedIndex) {
 
         options[selectedIndex].classList.add('bg-blue-100', 'border-blue-300');
     }
-    
+
     verificarCompletitudFinal();
 }
 
 function verificarCompletitudFinal() {
     // 3. Verificar si todas las 10 preguntas tienen respuesta
     const verificarCompletitudFinal = Object.keys(userAnswersFinal).length === preguntasSeleccionadasFinal.length;
-    
+
     if (verificarCompletitudFinal && currentQuestionIndexFinal === preguntasSeleccionadasFinal.length - 1) {
         document.getElementById('showResultsBtn-final').classList.remove('hidden');
         document.getElementById('next-btn-final').classList.add('hidden');
@@ -3430,10 +3452,10 @@ function advanceProgressFinal() {
     const progressFillFinal = document.getElementById('progress-fill-final');
     let currentWidthFinal = parseInt(progressFillFinal.style.width) || 0;
     let newWidthFinal = currentWidthFinal + 10;
-    
+
     // No superar el 100%
     if (newWidthFinal > 100) newWidthFinal = 100;
-    
+
     progressFillFinal.style.width = newWidthFinal + '%';
 }
 
@@ -3455,11 +3477,11 @@ function restartExamFinal() {
     document.getElementById('results-container-final').classList.add('hidden');
     document.getElementById('quiz-content-final').classList.add('hidden');
     document.getElementById('personal-form-final').classList.remove('hidden');
-    
+
     // 3. Reiniciar la barra de progreso
     const progressFill = document.getElementById('progress-fill-final');
     progressFill.style.width = '0%';
-    
+
     // 4. Limpiar las respuestas seleccionadas (si las hay)
     const selectedOptions = document.querySelectorAll('.option-item.selected');
     selectedOptions.forEach(option => {
@@ -3483,7 +3505,7 @@ function restartExamFinal() {
     prevBtnFinal.style.display = 'none';
     nextBtnFinal.style.display = 'none';
     btnSubmitFormFinal.classList.remove('hidden');
-    
+
     // 8. Habilitar el botón de comenzar examen si está deshabilitado
     if (btnSubmitFormFinal) {
         btnSubmitFormFinal.disabled = false;
@@ -3541,21 +3563,21 @@ if (restarExamFinal) {
 
 // Mostrar resultados Final
 function showResultsFinal() {
-    
+
     finalScoreFinal = 0;
     preguntasSeleccionadasFinal.forEach((question, index) => {
         if (userAnswersFinal[index] !== undefined && question.options[userAnswersFinal[index]].correct) {
             finalScoreFinal++;
         }
     });
-    
+
     const percentageFinal = (finalScoreFinal / preguntasSeleccionadasFinal.length) * 100;
-    
+
     document.getElementById('quiz-content-final').classList.add('hidden');
     document.getElementById('results-container-final').classList.remove('hidden');
     document.getElementById('score-display-final').textContent = `${finalScoreFinal}/${preguntasSeleccionadasFinal.length}`;
     document.getElementById('percentage-display-final').textContent = `${percentageFinal.toFixed(1)}%`;
-    
+
     // Aplicar clase de color según el puntaje
     const scoreDisplay = document.getElementById('score-display-final');
     if (percentageFinal >= 80) {
@@ -3568,7 +3590,7 @@ function showResultsFinal() {
         scoreDisplay.className = 'result-score text-red-600 text-4xl font-bold';
         document.getElementById('result-message-final').textContent = 'Necesitas reforzar tus conocimientos en seguridad de la información. Te recomendamos revisar el material nuevamente.';
     }
-    
+
     // Mostrar alerta con el resultado
     Swal.fire({
         title: 'Examen Finalizado',
@@ -3583,7 +3605,7 @@ if (downloadPdfBtnFinal) {
     downloadPdfBtnFinal.addEventListener('click', async () => {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
+
         const name = document.getElementById('nameFinal').value;
         const surname = document.getElementById('surnameFinal').value;
         const employeeId = document.getElementById('employeeIdFinal').value;
@@ -3592,6 +3614,8 @@ if (downloadPdfBtnFinal) {
         const totalQuestionsFinal = parseInt(preguntasSeleccionadasFinal.length);
         const percentageFinal = (score / totalQuestionsFinal) * 100;
         const now = new Date();
+        const nowPlusYear = new Date(now);
+        nowPlusYear.setFullYear(now.getFullYear() + 1);
         const passed = percentageFinal >= 80;
 
         if (passed) {
@@ -3602,7 +3626,7 @@ if (downloadPdfBtnFinal) {
         const iconOk = "data:image/png;base64,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"
         const iconNoOk = "data:image/png;base64,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"
         const icon = passed ? iconOk : iconNoOk
-        
+
         // function numeroAleatorio() { return Math.floor(Math.random() * 41); }
         // const aprovalCode = arrayCodes[numeroAleatorio()]
         const aprovalCode = await obtenerCodigoAleatorio();
@@ -3611,19 +3635,19 @@ if (downloadPdfBtnFinal) {
         const logoBase64 = "data:image/png;base64,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";
 
         const localDate = now.toLocaleDateString();
-        const localTime = now.toLocaleTimeString('es-ES', { 
-                                                    hour12: false,
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                    second: '2-digit'
-                                                });
+        const localTime = now.toLocaleTimeString('es-ES', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
         // Header
         doc.addImage(logoBase64, "PNG", 10, 10, 48, 12);
         doc.setFontSize(14);
         doc.text("Informe de Evaluación Final", 110, 20, { align: 'center' });
         doc.line(10, 25, 200, 25); // Línea debajo del encabezado
         doc.setFontSize(14);
-        doc.text("Capacitación Inicial en Seguridad de la Información - 2025", 110, 35, { align: 'center' });
+        doc.text("Capacitación Inicial en Seguridad de la Información - 2026", 110, 35, { align: 'center' });
 
         // Datos del Usuario
         doc.setFontSize(14);
@@ -3633,42 +3657,42 @@ if (downloadPdfBtnFinal) {
         doc.text(`Número de Legajo: ${employeeId}`, 15, 65);
         doc.text(`Email: ${email}`, 15, 75);
         doc.text(`Fecha y Hora: ${localDate} ${localTime}`, 15, 85);
-    
+
         // Resultados
         doc.text("Resultados Finales:", 10, 100);
         doc.setFontSize(14);
         doc.text(`Puntaje Final: ${score}/${totalQuestionsFinal}`, 15, 110);
         doc.text(`Porcentaje de acierto: ${percentageFinal.toFixed(0)}%`, 15, 120);
         doc.text(passed ? `Código: ${aprovalCode}` : " ", 15, 130);
-    
+        doc.text(passed ? `Valido hasta: ${nowPlusYear}` : " ", 15, 140);
+
         // Mensaje y icono de resultado
         doc.setFontSize(16);
         doc.addImage(icon, "PNG", 12, 162, 10, 10);
         doc.text(passed ? "¡Felicidades, has aprobado el Examen Final!" : "Revisa los conceptos de todos los modulos y vuelve a intentarlo.", 26, 170);
         doc.setFontSize(12);
         doc.text(passed ? `Envía este archivo pdf a itprodismo@prodismo.com con el asunto:` : " ", 20, 190);
-        doc.text(passed ? `Examen Final Capacitacion Seguridad 2025` : " ", 20, 200);
+        doc.text(passed ? `Examen Final Capacitacion Seguridad 2026` : " ", 20, 200);
         doc.text(passed ? `Muchas gracias!` : " ", 20, 210);
 
         doc.text(`Equipo de IT`, 140, 220);
         doc.addImage(logoBase64, "PNG", 140, 222, 24, 8);
-    
+
         doc.setFontSize(10);
         doc.text("No es necesario imprimir este certificado", 100, 276, { align: 'center' });
 
         doc.line(10, 280, 200, 280); // Línea arriba del footer
         doc.setFontSize(10);
         doc.text("F314-IT-C-1", 12, 285);
-    
-        doc.save(`Resultado_Examen_Final_${employeeId}_${name}-${surname}_${localDate.replace('/','_')}.pdf`);
+
+        doc.save(`Resultado_Examen_Final_${employeeId}_${name}-${surname}_${localDate.replace('/', '_')}.pdf`);
     });
 }
-
 
 //--------------- Encuesta final ------------------------------
 // Botón para realizar encuesta
 if (btnEncuestaFinal) {
-    btnEncuestaFinal.addEventListener('click', function() {
+    btnEncuestaFinal.addEventListener('click', function () {
         redirigirAEncuesta();
     });
 }
