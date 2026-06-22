@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "keywords": [],
-  "homepage": "https://github.com/germanClaudio/planCapacitacionSeguridadIT#readme",
+  "homepage": "https://github.com/prodismo-srl/Plan-Capacitacion-Seguridad-IT#readme",
   "bugs": {
-    "url": "https://github.com/germanClaudio/planCapacitacionSeguridadIT/issues"
+    "url": "https://github.com/prodismo-srl/Plan-Capacitacion-Seguridad-IT/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/germanClaudio/planCapacitacionSeguridadIT.git"
+    "url": "git+https://github.com/prodismo-srl/Plan-Capacitacion-Seguridad-IT.git"
   },
   "license": "ISC",
   "author": "German Montalbetti",
