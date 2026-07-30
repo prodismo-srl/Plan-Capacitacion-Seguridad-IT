@@ -638,6 +638,7 @@ const arrayUsuarios = [
     "gcerutti@prodismo.com",
     "gcomba@prodismo.com",
     "fpinnati@prodismo.com",
+    "galmonacid@prodismo.com",
     "gestion@prodismo.com",
     "ggoglio@prodismo.com",
     "gherrera@prodismo.com",
