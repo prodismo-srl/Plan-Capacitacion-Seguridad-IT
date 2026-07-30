@@ -572,6 +572,7 @@ function verificarAccesoExamen(event) {
 const arrayUsuarios = [
     "aaltamirano@prodismo.com",
     "abuenosaires@prodismo.com",
+    "acarvalho@prodismo.com",
     "acordoba@prodismo.com",
     "acorvalan@prodismo.com",
     "admpersonal@prodismo.com",
@@ -599,7 +600,6 @@ const arrayUsuarios = [
     "ccatala@prodismo.com",
     "ccid@prodismo.com",
     "cjuncos@prodismo.com",
-    "compras@prodismo.com",
     "comexterior@prodismo.com",
     "contable@prodismo.com",
     "croldan@prodismo.com",
@@ -623,7 +623,6 @@ const arrayUsuarios = [
     "esaulo@prodismo.com",
     "esanfelice@prodismo.com",
     "esola@prodismo.com",
-    "facturas@prodismo.com",
     "farrese@prodismo.com",
     "fbernaola@prodismo.com",
     "fforllarine@prodismo.com",
